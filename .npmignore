@@ -1,0 +1,11 @@
+src/
+.github/
+.storybook/
+.changeset/
+*.log
+tsconfig.json
+tsup.config.ts
+README.md.bak
+**/*.stories.ts
+**/*.stories.tsx
+storybook-static/
