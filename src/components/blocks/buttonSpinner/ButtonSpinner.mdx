@@ -1,0 +1,38 @@
+// FILE: src/components/blocks/buttonSpinner/ButtonSpinner.mdx
+import { Meta, Title, Subtitle, Description, Primary, Controls, Story } from "@storybook/blocks"
+import * as ButtonSpinnerStories from "../../../stories/buttonSpinner.stories"
+
+<Meta of={ButtonSpinnerStories} />
+
+<Title />
+<Subtitle>Compact spinner for button-level loading states</Subtitle>
+<Description>
+ButtonSpinner is a lightweight, border-based spinner sized to sit next to button text or icons. It inherits
+its color from the current text color and defaults to `aria-hidden` so it doesn't create noisy announcements.
+</Description>
+
+## When To Use
+- Inside buttons or inline action areas to show local loading.
+- Next to short labels where space is constrained.
+- When you already communicate status via `aria-live` text.
+
+## Do
+- Match the size to the button scale (`sm`, `md`, `lg`).
+- Pair with hidden status text for screen readers when needed.
+- Use `className` to set the spinner color.
+
+## Don't
+- Use as a full-page loader or progress indicator.
+- Rely on the spinner alone to announce status changes.
+- Oversize it so it competes with the label.
+
+## Accessibility Notes
+- Defaults to `aria-hidden="true"`.
+- For standalone status, set `aria-hidden={false}` and provide an `aria-live` message nearby.
+
+<Primary />
+<Controls />
+
+## Examples
+<Story of={ButtonSpinnerStories.Sizes} />
+<Story of={ButtonSpinnerStories.Inline} />
