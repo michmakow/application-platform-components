@@ -1,0 +1,39 @@
+// FILE: src/components/blocks/iconSlot/IconSlot.mdx
+import { Meta, Title, Subtitle, Description, Primary, Controls, Story } from "@storybook/blocks"
+import * as IconSlotStories from "../../../stories/iconSlot.stories"
+
+<Meta of={IconSlotStories} />
+
+<Title />
+<Subtitle>Inline icon wrapper for consistent sizing and alignment</Subtitle>
+<Description>
+IconSlot is a lightweight span wrapper that aligns icons with text and exposes a `position` data attribute
+for parent layouts. It keeps SVGs sized to the slot and inherits the current text color so icons stay
+in sync with surrounding typography.
+</Description>
+
+## When To Use
+- Inline icons paired with labels or metrics.
+- Leading or trailing glyphs inside buttons, pills, and filters.
+- Decorative icons that should inherit text color.
+
+## Do
+- Set an explicit size on the slot (`h-4 w-4`, `h-5 w-5`) to control icon scale.
+- Use `position` to coordinate spacing rules in parent components.
+- Mark purely decorative icons as `aria-hidden="true"`.
+
+## Don't
+- Use as an interactive element; wrap icons with a button or link instead.
+- Rely on it as the only accessible label for an action.
+- Place multiple icons inside a single slot.
+
+## Accessibility Notes
+- Provide a visible label or `aria-label` for meaningful icons.
+- For decorative icons, set `aria-hidden="true"` on the slot or the SVG.
+
+<Primary />
+<Controls />
+
+## Examples
+<Story of={IconSlotStories.Positions} />
+<Story of={IconSlotStories.Sizes} />

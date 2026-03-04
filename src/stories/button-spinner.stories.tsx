@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { ButtonSpinner } from "../components/blocks/buttonSpinner/buttonSpinner"
+import { ButtonSpinner } from "../components/blocks/button-spinner/button-spinner"
 
 const sizeOptions = [
   { label: "SM", value: "sm" },

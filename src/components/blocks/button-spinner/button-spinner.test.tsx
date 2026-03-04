@@ -1,7 +1,7 @@
 import { createRef } from "react"
 import { render } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
-import { ButtonSpinner } from "./buttonSpinner"
+import { ButtonSpinner } from "./button-spinner"
 
 describe("ButtonSpinner", () => {
   it("renders default size and aria-hidden", () => {
