@@ -44,7 +44,6 @@ export type ButtonProps = ButtonElementProps & {
   loadingPosition?: ButtonLoadingPosition; // "overlay" | "left" | "right"
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  glow?: boolean;
   glowIntensity?: ButtonGlowIntensity;
   rounded?: ButtonRounded;
   elevated?: boolean;
@@ -83,8 +82,7 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
       loadingPosition = "overlay",
       leftIcon,
       rightIcon,
-      glow = false,
-      glowIntensity = "soft",
+      glowIntensity,
       rounded = "lg",
       elevated = false,
       analyticsId,
@@ -133,6 +131,8 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
     );
 
     const showOverlay = loadingPosition === "overlay";
+    const isGlowEnabled = glowIntensity !== undefined;
+    const resolvedGlowIntensity = glowIntensity ?? "none";
 
     const compound =
       hasKnownSlotChild(children) || React.Children.count(children) === 0;
@@ -160,7 +160,7 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
         data-loading={isLoading ? "true" : "false"}
         data-disabled={isDisabled ? "true" : "false"}
         data-loading-position={loadingPosition}
-        data-glow={glow ? "true" : "false"}
+        data-glow={isGlowEnabled ? "true" : "false"}
         data-elevated={elevated ? "true" : "false"}
         data-rounded={rounded}
         data-analytics-id={analyticsId}
@@ -174,8 +174,7 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
             fullWidth,
             rounded,
             elevated,
-            glow,
-            glowIntensity,
+            glowIntensity: resolvedGlowIntensity,
           }),
           className,
         )}
@@ -183,46 +182,52 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
         tabIndex={resolvedTabIndex}
         {...restProps}
       >
-        {showOverlay ? (
-          <span
-            data-slot="overlay"
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-0 inline-flex items-center justify-center transition-opacity",
-              isLoading ? "opacity-100" : "opacity-0",
-            )}
-          >
-            <ButtonSpinner />
-          </span>
-        ) : null}
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {showOverlay ? (
+              <span
+                data-slot="overlay"
+                aria-hidden
+                className={cn(
+                  "pointer-events-none absolute inset-0 inline-flex items-center justify-center transition-opacity",
+                  isLoading ? "opacity-100" : "opacity-0",
+                )}
+              >
+                <ButtonSpinner />
+              </span>
+            ) : null}
 
-        <span
-          data-slot="content"
-          className={cn(
-            "inline-flex min-w-0 items-center justify-center gap-2",
-            showOverlay && isLoading ? "opacity-0" : "opacity-100",
-          )}
-        >
-          <ButtonSlot
-            position="left"
-            icon={leftIcon}
-            showSpinner={loadingPosition === "left"}
-            isLoading={isLoading}
-          />
-          {content}
-          <ButtonSlot
-            position="right"
-            icon={rightIcon}
-            showSpinner={loadingPosition === "right"}
-            isLoading={isLoading}
-          />
-        </span>
+            <span
+              data-slot="content"
+              className={cn(
+                "inline-flex min-w-0 items-center justify-center gap-2",
+                showOverlay && isLoading ? "opacity-0" : "opacity-100",
+              )}
+            >
+              <ButtonSlot
+                position="left"
+                icon={leftIcon}
+                showSpinner={loadingPosition === "left"}
+                isLoading={isLoading}
+              />
+              {content}
+              <ButtonSlot
+                position="right"
+                icon={rightIcon}
+                showSpinner={loadingPosition === "right"}
+                isLoading={isLoading}
+              />
+            </span>
 
-        {isLoading && loadingText ? (
-          <span className="sr-only" aria-live="polite">
-            {loadingText}
-          </span>
-        ) : null}
+            {isLoading && loadingText ? (
+              <span className="sr-only" aria-live="polite">
+                {loadingText}
+              </span>
+            ) : null}
+          </>
+        )}
       </Comp>
     );
   },

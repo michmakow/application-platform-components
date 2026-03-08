@@ -52,11 +52,8 @@ export const buttonVariants = cva(
         true: buttonTokens.elevated,
         false: "",
       },
-      glow: {
-        true: "",
-        false: "",
-      },
       glowIntensity: {
+        none: "",
         soft: "",
         medium: "",
         strong: "",
@@ -68,12 +65,12 @@ export const buttonVariants = cva(
       { variant: "link", size: "sm", className: "text-sm" },
       { variant: "link", size: "md", className: "text-sm" },
       { variant: "link", size: "lg", className: "text-base" },
-      { glow: true, glowIntensity: "soft", className: buttonTokens.glow.soft },
-      { glow: true, glowIntensity: "medium", className: buttonTokens.glow.medium },
-      { glow: true, glowIntensity: "strong", className: buttonTokens.glow.strong },
-      { glow: true, elevated: true, glowIntensity: "soft", className: buttonTokens.elevatedGlow.soft },
-      { glow: true, elevated: true, glowIntensity: "medium", className: buttonTokens.elevatedGlow.medium },
-      { glow: true, elevated: true, glowIntensity: "strong", className: buttonTokens.elevatedGlow.strong },
+      { glowIntensity: "soft", className: buttonTokens.glow.soft },
+      { glowIntensity: "medium", className: buttonTokens.glow.medium },
+      { glowIntensity: "strong", className: buttonTokens.glow.strong },
+      { elevated: true, glowIntensity: "soft", className: buttonTokens.elevatedGlow.soft },
+      { elevated: true, glowIntensity: "medium", className: buttonTokens.elevatedGlow.medium },
+      { elevated: true, glowIntensity: "strong", className: buttonTokens.elevatedGlow.strong },
     ],
     defaultVariants: {
       variant: "primary",
@@ -82,8 +79,7 @@ export const buttonVariants = cva(
       rounded: "lg",
       fullWidth: false,
       elevated: false,
-      glow: false,
-      glowIntensity: "soft",
+      glowIntensity: "none",
     },
   }
 )
