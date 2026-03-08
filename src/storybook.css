@@ -1,30 +1,31 @@
+@config "../tailwind.config.ts";
 @import "tailwindcss";
 
 :root,
 .sbdocs,
 .sbdocs-wrapper,
 #storybook-root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-  --background: 11 21 38;
-  --foreground: 230 235 240;
-  --card: 14 31 51;
-  --card-foreground: 230 235 240;
-  --popover: 14 31 51;
-  --popover-foreground: 230 235 240;
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --popover: 255 255 255;
+  --popover-foreground: 15 23 42;
   --primary: 230 195 106;
   --primary-foreground: 11 21 38;
-  --secondary: 26 40 61;
-  --secondary-foreground: 230 235 240;
-  --muted: 26 32 45;
-  --muted-foreground: 154 163 175;
-  --accent: 30 40 55;
-  --accent-foreground: 230 235 240;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  --accent: 226 232 240;
+  --accent-foreground: 15 23 42;
   --destructive: 220 38 38;
   --destructive-foreground: 255 255 255;
-  --border: 68 80 98;
-  --input: 68 80 98;
-  --ring: 230 195 106;
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --ring: 29 78 216;
 }
 
 body {
@@ -38,4 +39,24 @@ body {
 #storybook-root {
   background-color: rgb(var(--background));
   color: rgb(var(--foreground));
+}
+
+.sbdocs-title {
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.sbdocs-title::after {
+  content: "";
+  display: inline-block;
+  width: 320px;
+  height: 60px;
+  background-image: url("./assets/brand-horizontal_transparent.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }

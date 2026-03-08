@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss"
-import tailwindcssRtl from "tailwindcss-rtl"
 
 const withAlpha = (name: string) => `rgb(var(--${name}) / <alpha-value>)`
 
@@ -44,5 +43,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssRtl],
+  plugins: [],
 } satisfies Config

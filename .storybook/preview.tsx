@@ -30,7 +30,7 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <I18nextProvider i18n={i18n}>
-        <div className="min-h-screen bg-[#0B1526] text-[#E6EBF0] p-6">
+        <div className="storybook-canvas bg-background text-foreground p-3">
           <Story />
         </div>
       </I18nextProvider>

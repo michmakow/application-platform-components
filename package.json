@@ -1,7 +1,7 @@
 {
   "name": "@unitydynamics/application-platform-components",
   "version": "0.1.0",
-  "description": "Shared UI components for the Application Platform.",
+  "description": "Shared UI components for the Unity Dynamics Application Platform.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react"
 import { IconSlot } from "../components/blocks/icon-slot/icon-slot"
 
 const meta: Meta<typeof IconSlot> = {
-  title: "Interaction Patterns/IconSlot",
+  title: "Platform Components/Interaction Patterns/IconSlot",
   component: IconSlot,
   args: {
     position: "left",
@@ -31,17 +31,17 @@ export const Default: Story = {
 }
 
 export const Positions: Story = {
-  render: () => (
+  render: (args) => (
     <div className="grid gap-3 text-foreground">
       <div className="flex items-center gap-2">
-        <IconSlot position="left" className="h-4 w-4">
+        <IconSlot {...args} position="left" className={args.className ?? "h-4 w-4"}>
           <Sparkles />
         </IconSlot>
         <span className="text-sm">Left icon</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="text-sm">Right icon</span>
-        <IconSlot position="right" className="h-4 w-4">
+        <IconSlot {...args} position="right" className={args.className ?? "h-4 w-4"}>
           <ArrowRight />
         </IconSlot>
       </div>
@@ -50,15 +50,15 @@ export const Positions: Story = {
 }
 
 export const Sizes: Story = {
-  render: () => (
+  render: (args) => (
     <div className="flex items-center gap-4 text-foreground">
-      <IconSlot className="h-3 w-3">
+      <IconSlot {...args} className="h-3 w-3">
         <Sparkles />
       </IconSlot>
-      <IconSlot className="h-5 w-5">
+      <IconSlot {...args} className="h-5 w-5">
         <Sparkles />
       </IconSlot>
-      <IconSlot className="h-7 w-7">
+      <IconSlot {...args} className="h-7 w-7">
         <Sparkles />
       </IconSlot>
     </div>

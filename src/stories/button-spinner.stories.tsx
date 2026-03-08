@@ -8,11 +8,12 @@ const sizeOptions = [
 ] as const
 
 const meta: Meta<typeof ButtonSpinner> = {
-  title: "Interaction Patterns/ButtonSpinner",
+  title: "Platform Components/Interaction Patterns/ButtonSpinner",
   component: ButtonSpinner,
   args: {
     size: "md",
     className: "text-foreground",
+    "aria-hidden": true,
   },
   argTypes: {
     size: {
@@ -27,26 +28,36 @@ const meta: Meta<typeof ButtonSpinner> = {
 export default meta
 type Story = StoryObj<typeof ButtonSpinner>
 
-export const Default: Story = {}
+export const Default: Story = {
+  render: (args) => <ButtonSpinner {...args} />,
+}
 
 export const Sizes: Story = {
-  render: () => (
-    <div className="flex items-center gap-4 text-foreground">
-      {sizeOptions.map((option) => (
-        <div key={option.value} className="flex items-center gap-2 text-sm">
-          <ButtonSpinner size={option.value} />
-          <span>{option.label}</span>
-        </div>
-      ))}
-    </div>
-  ),
+  render: (args) => {
+    const { size: _size, className, ...rest } = args
+
+    return (
+      <div className="flex items-center gap-4 text-foreground">
+        {sizeOptions.map((option) => (
+          <div key={option.value} className="flex items-center gap-2 text-sm">
+            <ButtonSpinner size={option.value} className={className} {...rest} />
+            <span>{option.label}</span>
+          </div>
+        ))}
+      </div>
+    )
+  },
 }
 
 export const Inline: Story = {
-  render: () => (
-    <div className="flex items-center gap-3 text-foreground">
-      <ButtonSpinner size="sm" />
-      <span className="text-sm">Syncing report data</span>
-    </div>
-  ),
+  render: (args) => {
+    const { size: _size, className, ...rest } = args
+
+    return (
+      <div className="flex items-center gap-3 text-foreground">
+        <ButtonSpinner size="sm" className={className} {...rest} />
+        <span className="text-sm">Syncing report data</span>
+      </div>
+    )
+  },
 }
