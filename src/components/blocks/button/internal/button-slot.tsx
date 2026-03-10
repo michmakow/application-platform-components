@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../../../../lib/utils";
-import { ButtonSpinner } from "../../button-spinner/button-spinner";
+import { ButtonSpinner } from "../../button-spinner";
 import { ButtonIcon } from "./button-icon";
 
 interface ButtonSlotProps {

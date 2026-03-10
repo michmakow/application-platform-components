@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { ArrowRight, Check, Sparkles } from "lucide-react"
+import { ArrowRight, Bell, Check, Sparkles } from "lucide-react"
 import { Button } from "../components/blocks/button"
 const variantOptions = [
   { label: "Primary", value: "primary" },
@@ -29,6 +29,7 @@ const meta: Meta<typeof Button> = {
   component: Button,
   subcomponents: {
     Icon: Button.Icon,
+    IconButton: Button.IconButton,
     Spinner: Button.Spinner,
     Text: Button.Text,
   },
@@ -64,6 +65,7 @@ const meta: Meta<typeof Button> = {
       control: "select",
       options: ["left", "right", "overlay"],
     },
+    iconOnly: { control: "boolean" },
     leftIcon: { control: false },
     rightIcon: { control: false },
   },
@@ -146,6 +148,50 @@ export const Icons: Story = {
             <ArrowRight />
           </Button.Icon>
         </Button>
+      </div>
+    </div>
+  ),
+}
+
+export const IconButtons: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="ghost" iconOnly aria-label="Notifications">
+          <Bell />
+        </Button>
+        <Button variant="secondary" iconOnly rounded="full" aria-label="Sparkle action">
+          <Sparkles />
+        </Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-4">
+        <Button.IconButton
+          id="favorites"
+          icon={<Sparkles />}
+          alt="Favorites"
+          title="Favorites"
+          description="Quick access to starred items."
+          variant="primary"
+        />
+        <Button.IconButton
+          id="alerts"
+          icon={<Bell />}
+          alt="Alerts"
+          title="Alerts"
+          description="System activity updates."
+          showDot
+          badgeContent={3}
+          dotTitle="3 updates"
+          active
+        />
+        <Button.IconButton
+          id="labs"
+          icon={<Sparkles />}
+          alt="Labs"
+          title="Labs"
+          description="Experimental actions and previews."
+          comingSoon="Soon"
+        />
       </div>
     </div>
   ),

@@ -135,6 +135,17 @@ describe("Button", () => {
     expect(button.getAttribute("data-analytics-id")).toBe("analytics-save")
   })
 
+  it("sets icon-only data attribute", () => {
+    render(
+      <Button iconOnly aria-label="Settings">
+        <svg aria-hidden />
+      </Button>
+    )
+    const button = screen.getByRole("button", { name: "Settings" })
+
+    expect(button.getAttribute("data-icon-only")).toBe("true")
+  })
+
   it("does not glow when glowIntensity is not provided", () => {
     render(<Button>Save</Button>)
     const button = screen.getByRole("button", { name: "Save" })
@@ -207,5 +218,49 @@ describe("Button", () => {
     const button = screen.getByRole("button", { name: "Fallback" })
 
     expect(button.tagName).toBe("BUTTON")
+  })
+
+  it("Button.IconButton triggers click when enabled", () => {
+    const onClick = vi.fn()
+    render(
+      <Button.IconButton
+        id="favorites"
+        icon={<svg data-testid="favorites-icon" aria-hidden />}
+        alt="Favorites"
+        title="Favorites"
+        description="Quick access to starred items."
+        onClick={onClick}
+        showDot
+        badgeContent={3}
+      />
+    )
+    const button = screen.getByRole("button", { name: "Favorites" })
+
+    expect(button.getAttribute("data-nav-id")).toBe("favorites")
+    expect(screen.getByText("3")).toBeTruthy()
+    expect(screen.getByTestId("favorites-icon")).toBeTruthy()
+
+    fireEvent.click(button)
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it("Button.IconButton disables interaction when comingSoon is set", () => {
+    const onClick = vi.fn()
+    render(
+      <Button.IconButton
+        id="labs"
+        icon={<svg aria-hidden />}
+        alt="Labs"
+        title="Labs"
+        description="Experimental actions and previews."
+        comingSoon="Soon"
+        onClick={onClick}
+      />
+    )
+    const button = screen.getByRole("button", { name: "Labs" }) as HTMLButtonElement
+
+    expect(button.disabled).toBe(true)
+    fireEvent.click(button)
+    expect(onClick).not.toHaveBeenCalled()
   })
 })
