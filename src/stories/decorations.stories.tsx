@@ -3,8 +3,8 @@ import {
   AtmosphericGlows,
   atmosphericGlowsPositions,
   type AtmosphericGlowsPosition,
-} from "../components/decorations/atmospheriGows"
-import { CrystalFacets } from "../components/decorations/crystalFacets"
+} from "../components/decorations/atmospheric-glows"
+import { CrystalFacets } from "../components/decorations/crystal-facets"
 
 const positionLabels: Record<AtmosphericGlowsPosition, string> = {
   "top-left": "Top left corner",
@@ -19,7 +19,7 @@ const positionLabels: Record<AtmosphericGlowsPosition, string> = {
 }
 
 type DecorationsStoryArgs = {
-  position: AtmosphericGlowsPosition
+  position?: AtmosphericGlowsPosition
   crystalColor: string
   crystalFacetSize: number
 }
@@ -49,7 +49,7 @@ const meta = {
 } satisfies Meta<DecorationsStoryArgs>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<DecorationsStoryArgs>
 
 export const Atmosphere: Story = {
   render: ({ crystalColor, crystalFacetSize, ...glowArgs }) => (
