@@ -1,1 +1,1 @@
-export * from "./crystalFacets"
+export * from "./crystal-facets"
