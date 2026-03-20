@@ -1,20 +1,21 @@
-import * as React from "react"
-import * as SeparatorPrimitive from "@radix-ui/react-separator"
-import { cn } from "../../lib/utils"
+import * as React from "react";
+import * as SeparatorPrimitive from "@radix-ui/react-separator";
+import { cn } from "../../lib/utils";
 import {
   SeparatorDecoratedTrack,
   SeparatorDiagonalTrack,
   defaultRenderIconButton,
-} from "./internal/separator-components"
-import { useSeparatorModel } from "./internal/use-separator-model"
-import { useSeparatorStyles } from "./internal/use-separator-styles"
-import type { SeparatorProps } from "./separator.types"
+} from "./internal/separator-components";
+import { useSeparatorModel } from "./internal/use-separator-model";
+import { useSeparatorStyles } from "./internal/use-separator-styles";
+import type { SeparatorProps } from "./separator.types";
+import { useEffect } from "react";
 
-type SeparatorInternalProps = SeparatorProps & {
-  asChild?: boolean
+interface SeparatorInternalProps extends SeparatorProps {
+  asChild?: boolean;
 }
 
-function Separator({
+const Separator: React.FC<SeparatorInternalProps> = ({
   className,
   orientation = "horizontal",
   decorative = true,
@@ -38,18 +39,20 @@ function Separator({
   style,
   asChild,
   ...props
-}: SeparatorInternalProps) {
-  const iconButtonRenderer = renderIconButton ?? defaultRenderIconButton
+}) => {
+  const iconButtonRenderer = renderIconButton ?? defaultRenderIconButton;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-      return
+      return;
     }
 
     if (asChild) {
-      console.warn("[Separator] `asChild` is not supported in this wrapper and will be ignored.")
+      console.warn(
+        "[Separator] `asChild` is not supported in this wrapper and will be ignored.",
+      );
     }
-  }, [asChild])
+  }, [asChild]);
 
   const model = useSeparatorModel({
     orientation,
@@ -69,13 +72,13 @@ function Separator({
     edgeEnd,
     ornamentCount,
     hideCenterContent,
-  })
+  });
 
   const styles = useSeparatorStyles({
     model,
     style,
     fadeColorClassName,
-  })
+  });
 
   if (model.centerVariant && !model.isDiagonal) {
     return (
@@ -106,10 +109,10 @@ function Separator({
           renderIconButton={iconButtonRenderer}
         />
       </SeparatorPrimitive.Root>
-    )
+    );
   }
 
-  if (model.isDiagonal) {
+  if (orientation === "diagonal-down" || orientation === "diagonal-up") {
     return (
       <SeparatorDiagonalTrack
         orientation={orientation}
@@ -129,7 +132,7 @@ function Separator({
         renderIconButton={iconButtonRenderer}
         {...props}
       />
-    )
+    );
   }
 
   return (
@@ -143,16 +146,18 @@ function Separator({
       className={cn(
         "shrink-0",
         model.isVertical ? "h-full" : "w-full",
-        model.shouldUseTailwindGradientFadeForDefaultSolidSeparator ? styles.fadeClasses : null,
+        model.shouldUseTailwindGradientFadeForDefaultSolidSeparator
+          ? styles.fadeClasses
+          : null,
         className,
       )}
       style={styles.rootStyle}
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Separator }
+export { Separator };
 export {
   SEPARATOR_ORNAMENTS,
   separatorNode,
@@ -163,4 +168,4 @@ export {
   type SeparatorOrnamentKey,
   type SeparatorProps,
   type SeparatorVariant,
-} from "./separator.types"
+} from "./separator.types";
