@@ -4,7 +4,7 @@ import {
   GlobalLoadingOverlay,
   type GlobalLoadingOverlayProps,
 } from "../components/utility/global-loading-overlay"
-import { useUtilityStore } from "../store/utilityStore"
+import { useUtilityStore } from "../store/utility/utility-store"
 
 const meta: Meta<typeof GlobalLoadingOverlay> = {
   title: "Platform Components/Async State Components/GlobalLoadingOverlay",
@@ -56,17 +56,17 @@ export default meta
 type Story = StoryObj<typeof GlobalLoadingOverlay>
 
 const AlwaysLoadingPreview = (args: GlobalLoadingOverlayProps) => {
-  const startLoading = useUtilityStore((state) => state.startLoading)
-  const resetLoading = useUtilityStore((state) => state.resetLoading)
+  const startOverlay = useUtilityStore((state) => state.overlaySpinner.startLoading)
+  const resetOverlay = useUtilityStore((state) => state.overlaySpinner.resetLoading)
 
   useEffect(() => {
-    resetLoading()
-    startLoading()
-    return () => resetLoading()
-  }, [startLoading, resetLoading])
+    resetOverlay()
+    startOverlay()
+    return () => resetOverlay()
+  }, [startOverlay, resetOverlay])
 
   return (
-    <div className="min-h-30 bg-[radial-gradient(circle_at_top,#0f1d3d_0%,#091124_42%,#050811_100%)] p-8">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#0f1d3d_0%,#091124_42%,#050811_100%)] p-8">
       <GlobalLoadingOverlay {...args} />
     </div>
   )

@@ -1,6 +1,6 @@
 import React from "react"
 import { cn } from "../../../lib/utils"
-import { useUtilityStore } from "../../../store/utilityStore"
+import { useScopedUtilityStore } from "../../../store/utility/utility-store-provider"
 
 const DEFAULT_OVERLAY_COLOR = "rgba(0, 6, 15, 0.75)"
 const DEFAULT_SPINNER_COLOR = "rgba(230, 195, 106, 0.8)"
@@ -83,7 +83,7 @@ export const GlobalLoadingOverlay: React.FC<GlobalLoadingOverlayProps> = ({
   overlayClassName,
   spinnerClassName,
 }) => {
-  const isLoading = useUtilityStore((state) => state.isLoading)
+  const isLoading = useScopedUtilityStore((state) => state.overlaySpinner.isLoading)
   const waveStrokeWidth = Math.max(1.2, spinnerThickness * 0.92)
   const waveAmplitude = Math.max(1.2, spinnerThickness * 0.95)
   const waveRadius = Math.max(26, 50 - waveAmplitude - waveStrokeWidth * 0.9)

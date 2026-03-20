@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it } from "vitest"
 import { cleanup, render, screen } from "@testing-library/react"
 import { GlobalLoadingOverlay } from "./global-loading-overlay"
-import { useUtilityStore } from "../../../store/utilityStore"
+import { useUtilityStore } from "../../../store/utility/utility-store"
 
 afterEach(() => {
   cleanup()
-  useUtilityStore.getState().resetLoading()
-  useUtilityStore.getState().clearToast()
+  useUtilityStore.getState().overlaySpinner.resetLoading()
+  useUtilityStore.getState().toast.clear()
 })
 
 describe("GlobalLoadingOverlay", () => {
@@ -17,7 +17,7 @@ describe("GlobalLoadingOverlay", () => {
   })
 
   it("renders default spinner when loading starts", () => {
-    useUtilityStore.getState().startLoading()
+    useUtilityStore.getState().overlaySpinner.startLoading()
     const { container } = render(<GlobalLoadingOverlay />)
     const overlay = screen.getByRole("status")
     const spinner = container.querySelector(
@@ -35,7 +35,7 @@ describe("GlobalLoadingOverlay", () => {
   })
 
   it("uses configurable colors, shape and center content from props", () => {
-    useUtilityStore.getState().startLoading()
+    useUtilityStore.getState().overlaySpinner.startLoading()
     const { container } = render(
       <GlobalLoadingOverlay
         overlayColor="rgba(10, 20, 30, 0.6)"
@@ -70,7 +70,7 @@ describe("GlobalLoadingOverlay", () => {
   })
 
   it("renders orbit-wave animation mode without spinner rotation", () => {
-    useUtilityStore.getState().startLoading()
+    useUtilityStore.getState().overlaySpinner.startLoading()
     const { container } = render(<GlobalLoadingOverlay spinnerAnimation="orbit-wave" />)
     const spinner = container.querySelector('[data-slot="global-loading-spinner"]') as HTMLSpanElement
     const waveRing = container.querySelector('[data-slot="global-loading-spinner-wave"]')
@@ -85,7 +85,7 @@ describe("GlobalLoadingOverlay", () => {
   })
 
   it("renders orbit-pulse animation mode with orbiting pulse dot", () => {
-    useUtilityStore.getState().startLoading()
+    useUtilityStore.getState().overlaySpinner.startLoading()
     const { container } = render(<GlobalLoadingOverlay spinnerAnimation="orbit-pulse" />)
     const spinner = container.querySelector('[data-slot="global-loading-spinner"]') as HTMLSpanElement
     const orbitDot = container.querySelector('[data-slot="global-loading-spinner-orbit-dot"]')
