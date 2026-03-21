@@ -257,7 +257,6 @@ export const GlobalToast: React.FC = () => {
   }, [])
 
   if (!isReplaceMode && toastQueue.length === 0) return null
-  if (isReplaceMode && !visibleToast) return null
 
   const renderToastCard = (
     toast: UtilityToastQueueItem,
@@ -325,6 +324,8 @@ export const GlobalToast: React.FC = () => {
       </div>
     )
   }
+
+  if (!visibleToast) return null
 
   return (
     <div
