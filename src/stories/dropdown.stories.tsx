@@ -7,6 +7,7 @@ import {
   type DropdownColors,
   type DropdownIconPlacement,
   type DropdownPreset,
+  type DropdownTriggerDisplay,
   type DropdownValue,
 } from "../components/dropdown"
 
@@ -56,6 +57,7 @@ type DropdownStoryArgs = {
   placeholder: string
   searchable: boolean
   multiSelect: boolean
+  triggerDisplay: DropdownTriggerDisplay
   itemIconPlacement: DropdownIconPlacement
   selectedIconPlacement: DropdownIconPlacement
   maxVisiblePills: number
@@ -78,6 +80,7 @@ const normalizeStoryValue = (
 }
 
 const renderDropdown = (args: DropdownStoryArgs) => {
+  const isCompactTrigger = args.triggerDisplay === "icon-only" && !args.multiSelect
   const initialValue = useMemo<DropdownValue>(
     () => (args.multiSelect ? ["clarity"] : "clarity"),
     [args.multiSelect]
@@ -99,11 +102,15 @@ const renderDropdown = (args: DropdownStoryArgs) => {
         searchable={args.searchable}
         multiSelect={args.multiSelect}
         closeOnSelect={!args.multiSelect}
+        triggerDisplay={args.triggerDisplay}
         itemIconPlacement={args.itemIconPlacement}
         selectedIconPlacement={args.selectedIconPlacement}
         maxVisiblePills={args.maxVisiblePills}
         presets={args.usePresets ? DEFAULT_PRESETS : undefined}
         colors={args.useCustomColors ? COLOR_PRESET_GOLD : undefined}
+        containerClassName={isCompactTrigger ? "w-10" : undefined}
+        triggerClassName={isCompactTrigger ? "h-10 min-h-10 w-10 rounded-3xl px-2 py-2" : undefined}
+        menuClassName={isCompactTrigger ? "w-60" : undefined}
       />
     </div>
   )
@@ -118,6 +125,7 @@ const meta: Meta<DropdownStoryArgs> = {
     placeholder: "Select option",
     searchable: true,
     multiSelect: false,
+    triggerDisplay: "default",
     itemIconPlacement: "left",
     selectedIconPlacement: "left",
     maxVisiblePills: 3,
@@ -129,6 +137,10 @@ const meta: Meta<DropdownStoryArgs> = {
     placeholder: { control: "text" },
     searchable: { control: "boolean" },
     multiSelect: { control: "boolean" },
+    triggerDisplay: {
+      control: "select",
+      options: ["default", "icon-only"],
+    },
     itemIconPlacement: {
       control: "select",
       options: ["none", "left", "right", "both"],
@@ -164,5 +176,15 @@ export const IconsBothSides: Story = {
     searchable: true,
     itemIconPlacement: "both",
     selectedIconPlacement: "both",
+  },
+}
+
+export const CompactIconOnly: Story = {
+  args: {
+    triggerDisplay: "icon-only",
+    searchable: false,
+    multiSelect: false,
+    itemIconPlacement: "left",
+    selectedIconPlacement: "left",
   },
 }

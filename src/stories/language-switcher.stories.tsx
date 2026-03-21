@@ -12,12 +12,19 @@ type Story = StoryObj<typeof LanguageSwitcher>
 export const Floating: Story = {
   args: {
     variant: "floating",
-    className: "!left-5 !w-[50px] !top-0 [&_button]:!w-fit",
+    className: "!left-5 !top-0",
   },
 }
 
 export const Compact: Story = {
   args: {
     variant: "compact",
+  },
+}
+
+export const CompactFullIcon: Story = {
+  args: {
+    variant: "compact",
+    compactFillIcon: true,
   },
 }

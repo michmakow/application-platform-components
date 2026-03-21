@@ -16,6 +16,8 @@ export type DropdownOption = {
 export type DropdownValue = string | string[]
 
 export type DropdownIconPlacement = "none" | "left" | "right" | "both"
+export type DropdownTriggerDisplay = "default" | "icon-only"
+export type DropdownIconOnlySource = "auto" | "icon" | "leftIcon" | "rightIcon"
 
 export type DropdownPreset = {
   id: string
@@ -79,6 +81,9 @@ export interface DropdownProps
   searchInputClassName?: string
   chevronClassName?: string
   iconClassName?: string // backward compatibility alias for chevron class
+  triggerDisplay?: DropdownTriggerDisplay
+  iconOnlySource?: DropdownIconOnlySource
+  iconOnlyContentClassName?: string
   removablePills?: boolean
   onOpenChange?: (open: boolean) => void
 }
@@ -192,6 +197,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
   searchInputClassName,
   chevronClassName,
   iconClassName,
+  triggerDisplay = "default",
+  iconOnlySource = "auto",
+  iconOnlyContentClassName,
   removablePills = true,
   onOpenChange,
   ...props
@@ -251,6 +259,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
   const selectedOption = selectedOptions[0]
   const resolvedItemIconPlacement = itemIconPlacement ?? selectedIconPlacement
+  const isIconOnlyTrigger = triggerDisplay === "icon-only" && !multiSelect
 
   const setOpen = React.useCallback(
     (nextOpen: boolean) => {
@@ -677,6 +686,38 @@ export const Dropdown: React.FC<DropdownProps> = ({
     )
   }
 
+  const resolveTriggerIcon = (option: DropdownOption): React.ReactNode => {
+    if (iconOnlySource === "icon") {
+      return option.icon ?? option.leftIcon ?? option.rightIcon ?? null
+    }
+
+    if (iconOnlySource === "leftIcon") {
+      return option.leftIcon ?? option.icon ?? option.rightIcon ?? null
+    }
+
+    if (iconOnlySource === "rightIcon") {
+      return option.rightIcon ?? option.icon ?? option.leftIcon ?? null
+    }
+
+    if (option.leftIcon) return option.leftIcon
+    if (option.icon) return option.icon
+    if (option.rightIcon) return option.rightIcon
+
+    if (includesPlacement(selectedIconPlacement, "left")) {
+      return option.icon ?? option.rightIcon ?? option.leftIcon ?? null
+    }
+
+    if (includesPlacement(selectedIconPlacement, "right")) {
+      return option.icon ?? option.leftIcon ?? option.rightIcon ?? null
+    }
+
+    return null
+  }
+
+  const triggerIconOnlyContent = selectedOption
+    ? resolveTriggerIcon(selectedOption)
+    : null
+
   const triggerAriaLabel =
     selectedOptions.length > 0
       ? multiSelect
@@ -694,7 +735,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
     >
       <div
         className={cn(
-          "relative flex min-h-10 w-full items-center rounded-xl border px-3 py-2 pr-10 text-left text-sm transition",
+          "relative flex min-h-10 w-full items-center rounded-xl border px-3 py-2 text-left text-sm transition",
+          !isIconOnlyTrigger && "pr-10",
+          isIconOnlyTrigger && "justify-center",
           "border-(--ud-dropdown-trigger-border) bg-(--ud-dropdown-trigger-bg) text-(--ud-dropdown-trigger-text)",
           "focus-within:ring-2 focus-within:ring-(--ud-dropdown-trigger-border)",
           disabled && "opacity-60",
@@ -730,7 +773,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
         <span
           data-slot="dropdown-selected"
-          className="pointer-events-none relative z-10 flex min-w-0 flex-1 items-center gap-2"
+          className={cn(
+            "pointer-events-none relative z-10 flex min-w-0 items-center gap-2",
+            isIconOnlyTrigger ? "justify-center" : "flex-1"
+          )}
         >
           {multiSelect ? (
             selectedOptions.length > 0 ? (
@@ -800,37 +846,55 @@ export const Dropdown: React.FC<DropdownProps> = ({
               <span className="truncate opacity-75">{placeholder}</span>
             )
           ) : selectedOption ? (
-            <>
-              {renderIcon(
-                selectedOption,
-                "left",
-                selectedIconPlacement,
-                "dropdown-selected-icon-left"
-              )}
-              <span className="truncate">{selectedOption.label}</span>
-              {renderIcon(
-                selectedOption,
-                "right",
-                selectedIconPlacement,
-                "dropdown-selected-icon-right"
-              )}
-            </>
+            isIconOnlyTrigger ? (
+              triggerIconOnlyContent ? (
+                <span
+                  data-slot="dropdown-selected-icon-only"
+                  className={cn(
+                    "inline-flex h-4 w-6 shrink-0 items-center justify-center text-current [&>svg]:h-4 [&>svg]:w-4",
+                    iconOnlyContentClassName
+                  )}
+                >
+                  {triggerIconOnlyContent}
+                </span>
+              ) : (
+                <span className="truncate">{selectedOption.label}</span>
+              )
+            ) : (
+              <>
+                {renderIcon(
+                  selectedOption,
+                  "left",
+                  selectedIconPlacement,
+                  "dropdown-selected-icon-left"
+                )}
+                <span className="truncate">{selectedOption.label}</span>
+                {renderIcon(
+                  selectedOption,
+                  "right",
+                  selectedIconPlacement,
+                  "dropdown-selected-icon-right"
+                )}
+              </>
+            )
           ) : (
             <span className="truncate opacity-75">{placeholder}</span>
           )}
         </span>
 
-        <ChevronDown
-          data-slot="dropdown-chevron"
-          className={cn(
-            "pointer-events-none absolute right-3 top-1/2 z-10 size-4 -translate-y-1/2 text-(--ud-dropdown-chevron)",
-            "transition-transform duration-200 ease-out",
-            isOpen ? "rotate-180" : "rotate-0",
-            disabled && "opacity-60",
-            chevronClassName,
-            iconClassName
-          )}
-        />
+        {!isIconOnlyTrigger ? (
+          <ChevronDown
+            data-slot="dropdown-chevron"
+            className={cn(
+              "pointer-events-none absolute right-3 top-1/2 z-10 size-4 -translate-y-1/2 text-(--ud-dropdown-chevron)",
+              "transition-transform duration-200 ease-out",
+              isOpen ? "rotate-180" : "rotate-0",
+              disabled && "opacity-60",
+              chevronClassName,
+              iconClassName
+            )}
+          />
+        ) : null}
       </div>
 
       {isOpen && !disabled ? (

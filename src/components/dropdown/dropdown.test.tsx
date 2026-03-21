@@ -119,6 +119,85 @@ describe("Dropdown", () => {
     ).toBeGreaterThan(0)
   })
 
+  it("supports icon-only trigger display for single-select", () => {
+    render(
+      <Dropdown
+        options={ICON_OPTIONS}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+      />
+    )
+
+    const selectedContainer = document.querySelector(
+      '[data-slot="dropdown-selected"]'
+    ) as HTMLElement
+
+    expect(
+      document.querySelector('[data-slot="dropdown-selected-icon-only"]')
+    ).toBeTruthy()
+    expect(selectedContainer.textContent).not.toContain("Clarity")
+    expect(document.querySelector('[data-slot="dropdown-chevron"]')).toBeNull()
+
+    fireEvent.click(getTrigger())
+    fireEvent.click(screen.getByRole("option", { name: "Empathy" }))
+
+    expect(screen.queryByRole("listbox")).toBeNull()
+    expect(
+      document.querySelector('[data-slot="dropdown-selected-icon-only"]')
+    ).toBeTruthy()
+    expect(getTrigger().getAttribute("aria-label")).toBe("Empathy")
+  })
+
+  it("supports selecting icon source and custom class in icon-only trigger", () => {
+    const iconSourceOptions: DropdownOption[] = [
+      {
+        value: "clarity",
+        label: "Clarity",
+        leftIcon: <span data-testid="icon-only-left">*</span>,
+        icon: <span data-testid="icon-only-main">#</span>,
+      },
+    ]
+
+    render(
+      <Dropdown
+        options={iconSourceOptions}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="icon"
+        iconOnlyContentClassName="!h-full !w-full"
+      />
+    )
+
+    const iconOnlyContainer = document.querySelector(
+      '[data-slot="dropdown-selected-icon-only"]'
+    ) as HTMLSpanElement
+
+    expect(iconOnlyContainer.className).toContain("!h-full")
+    expect(iconOnlyContainer.className).toContain("!w-full")
+    expect(screen.getByTestId("icon-only-main")).toBeTruthy()
+    expect(screen.queryByTestId("icon-only-left")).toBeNull()
+  })
+
+  it("falls back to label in icon-only trigger when selected option has no icon", () => {
+    render(
+      <Dropdown
+        options={[{ value: "facts", label: "Facts" }]}
+        defaultValue="facts"
+        triggerDisplay="icon-only"
+      />
+    )
+
+    const selectedContainer = document.querySelector(
+      '[data-slot="dropdown-selected"]'
+    ) as HTMLElement
+
+    expect(
+      document.querySelector('[data-slot="dropdown-selected-icon-only"]')
+    ).toBeNull()
+    expect(selectedContainer.textContent).toContain("Facts")
+    expect(document.querySelector('[data-slot="dropdown-chevron"]')).toBeNull()
+  })
+
   it("filters options by label when searchable mode is enabled", () => {
     render(<Dropdown options={ICON_OPTIONS} searchable />)
 
