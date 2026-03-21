@@ -52,13 +52,10 @@
   "devDependencies": {
     "@changesets/changelog-git": "^0.2.1",
     "@changesets/cli": "^2.29.0",
-    "@storybook/addon-essentials": "8.6.17",
-    "@storybook/addon-interactions": "8.6.17",
-    "@storybook/addon-links": "8.6.17",
-    "@storybook/react-vite": "8.6.17",
-    "@storybook/test": "8.6.17",
+    "@storybook/addon-links": "10.3.1",
+    "@storybook/react-vite": "10.3.1",
     "@testing-library/react": "^16.0.0",
-    "storybook": "8.6.17",
+    "storybook": "10.3.1",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "i18next": "^24.2.1",
@@ -73,7 +70,8 @@
     "typescript": "^5.8.3",
     "vitest": "^2.0.5",
     "@vitest/coverage-v8": "^2.0.5",
-    "zustand": "^4.5.7"
+    "zustand": "^4.5.7",
+    "@storybook/addon-docs": "10.3.1"
   },
   "packageManager": "pnpm@9.12.0"
 }

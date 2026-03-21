@@ -36,6 +36,7 @@ const preview: Preview = {
       </I18nextProvider>
     ),
   ],
+
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -45,6 +46,8 @@ const preview: Preview = {
       },
     },
   },
+
+  tags: ["autodocs"]
 }
 
 export default preview

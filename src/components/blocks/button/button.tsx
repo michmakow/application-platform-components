@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../../../lib/utils";
 
 import { ButtonSpinner } from "../button-spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../utility/tooltip";
 import { buttonVariants } from "./button.styles";
 import {
   ButtonIconButtonVariant,
