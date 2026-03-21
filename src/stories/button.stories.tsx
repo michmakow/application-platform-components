@@ -169,6 +169,7 @@ export const IconButtons: Story = {
           id="favorites"
           icon={<Sparkles />}
           alt="Favorites"
+          showTooltip
           title="Favorites"
           description="Quick access to starred items."
           variant="primary"
@@ -177,6 +178,7 @@ export const IconButtons: Story = {
           id="alerts"
           icon={<Bell />}
           alt="Alerts"
+          showTooltip
           title="Alerts"
           description="System activity updates."
           showDot
@@ -188,6 +190,7 @@ export const IconButtons: Story = {
           id="labs"
           icon={<Sparkles />}
           alt="Labs"
+          showTooltip
           title="Labs"
           description="Experimental actions and previews."
           comingSoon="Soon"

@@ -262,14 +262,15 @@ export type ButtonIconButtonProps = Omit<
   id: string;
   icon: React.ReactNode | string;
   alt: string;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   variant?: ButtonIconButtonVariant;
   showDot?: boolean;
   dotTitle?: string;
   badgeContent?: number | string;
   active?: boolean;
   comingSoon?: string;
+  showTooltip?: boolean;
 };
 
 export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonProps>(
@@ -289,6 +290,7 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
       badgeContent,
       active = false,
       comingSoon,
+      showTooltip = false,
       className,
       ...rest
     } = props;
@@ -324,83 +326,89 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
       comingSoon ? "opacity-80" : "",
     );
 
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <ButtonRoot
-            ref={ref}
-            {...rest}
-            type="button"
-            variant="ghost"
-            size={size}
-            iconOnly
-            rounded="full"
-            aria-label={alt}
-            aria-current={active ? "page" : undefined}
-            data-nav-button="true"
-            data-nav-id={id}
-            onClick={isDisabled ? undefined : onClick}
-            disabled={isDisabled}
+    const iconButtonElement = (
+      <ButtonRoot
+        ref={ref}
+        {...rest}
+        type="button"
+        variant="ghost"
+        size={size}
+        iconOnly
+        rounded="full"
+        aria-label={alt}
+        aria-current={active ? "page" : undefined}
+        data-nav-button="true"
+        data-nav-id={id}
+        onClick={isDisabled ? undefined : onClick}
+        disabled={isDisabled}
+        className={cn(
+          "group !h-auto !w-auto rounded-3xl border border-transparent p-3 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#E6C36A]/45 focus-visible:ring-offset-1 focus-visible:ring-offset-[#001629]",
+          !isDisabled && "cursor-pointer hover:bg-[#E6C36A]/10 hover:border-[#E6C36A]/60 active:scale-[0.98]",
+          isDisabled && "cursor-default opacity-60",
+          activeFrame,
+          className,
+        )}
+      >
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute -inset-1.5 rounded-full blur-[10px] transition-opacity duration-300",
+            glowTone,
+            active
+              ? "opacity-95"
+              : isDisabled
+                ? "opacity-0"
+                : "opacity-0 group-hover:opacity-90 group-focus-visible:opacity-90",
+          )}
+        />
+
+        <span
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0.5 rounded-full ring-1 ring-white/5",
+            active ? "opacity-95" : "opacity-70",
+          )}
+        />
+
+        {active && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_50%_30%,rgba(255,210,111,0.16),transparent_55%)]"
+          />
+        )}
+
+        {showDot && (
+          <span
+            title={dotTitle}
+            className="absolute right-1.5 top-2.5 z-30 inline-flex min-w-[18px] items-center justify-center rounded-full bg-[#FFD26F] px-1.5 py-[3px] text-[10px] font-semibold uppercase tracking-wide text-[#0B1526] shadow-[0_0_12px_rgba(255,210,111,0.70)]"
+          >
+            {badgeContent ?? ""}
+          </span>
+        )}
+
+        {typeof icon === "string" ? (
+          <img src={icon} alt="" aria-hidden className={iconClasses} />
+        ) : (
+          <span
+            aria-hidden
             className={cn(
-              "group !h-auto !w-auto rounded-3xl border border-transparent p-3 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#E6C36A]/45 focus-visible:ring-offset-1 focus-visible:ring-offset-[#001629]",
-              !isDisabled && "cursor-pointer hover:bg-[#E6C36A]/10 hover:border-[#E6C36A]/60 active:scale-[0.98]",
-              isDisabled && "cursor-default opacity-60",
-              activeFrame,
-              className,
+              "relative inline-flex h-4 w-4 items-center justify-center sm:h-7 sm:w-7 [&>svg]:h-full [&>svg]:w-full [&>svg]:shrink-0",
+              iconClasses,
             )}
           >
-            <span
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute -inset-1.5 rounded-full blur-[10px] transition-opacity duration-300",
-                glowTone,
-                active
-                  ? "opacity-95"
-                  : isDisabled
-                    ? "opacity-0"
-                    : "opacity-0 group-hover:opacity-90 group-focus-visible:opacity-90",
-              )}
-            />
+            {icon}
+          </span>
+        )}
+      </ButtonRoot>
+    );
 
-            <span
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute inset-0.5 rounded-full ring-1 ring-white/5",
-                active ? "opacity-95" : "opacity-70",
-              )}
-            />
+    if (!showTooltip) {
+      return iconButtonElement;
+    }
 
-            {active && (
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_50%_30%,rgba(255,210,111,0.16),transparent_55%)]"
-              />
-            )}
-
-            {showDot && (
-              <span
-                title={dotTitle}
-                className="absolute right-1.5 top-2.5 z-30 inline-flex min-w-[18px] items-center justify-center rounded-full bg-[#FFD26F] px-1.5 py-[3px] text-[10px] font-semibold uppercase tracking-wide text-[#0B1526] shadow-[0_0_12px_rgba(255,210,111,0.70)]"
-              >
-                {badgeContent ?? ""}
-              </span>
-            )}
-
-            {typeof icon === "string" ? (
-              <img src={icon} alt="" aria-hidden className={iconClasses} />
-            ) : (
-              <span
-                aria-hidden
-                className={cn(
-                  "relative inline-flex h-4 w-4 items-center justify-center sm:h-7 sm:w-7 [&>svg]:h-full [&>svg]:w-full [&>svg]:shrink-0",
-                  iconClasses,
-                )}
-              >
-                {icon}
-              </span>
-            )}
-          </ButtonRoot>
-        </TooltipTrigger>
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{iconButtonElement}</TooltipTrigger>
 
         <TooltipContent
           side="bottom"
@@ -409,7 +417,7 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
         >
           <div className="space-y-1 text-center">
             <div className="flex items-center justify-center gap-2">
-              <div className="text-sm font-semibold text-[#E6C36A]">{title}</div>
+              <div className="text-sm font-semibold text-[#E6C36A]">{title ?? alt}</div>
               {comingSoon && (
                 <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#E6C36A]/85">
                   {comingSoon}
@@ -417,7 +425,9 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
               )}
             </div>
 
-            <div className="text-xs leading-snug text-[#C6CED7]">{description}</div>
+            {description ? (
+              <div className="text-xs leading-snug text-[#C6CED7]">{description}</div>
+            ) : null}
           </div>
         </TooltipContent>
       </Tooltip>

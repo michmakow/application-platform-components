@@ -237,11 +237,34 @@ describe("Button", () => {
     const button = screen.getByRole("button", { name: "Favorites" })
 
     expect(button.getAttribute("data-nav-id")).toBe("favorites")
+    expect(button.getAttribute("data-state")).toBeNull()
     expect(screen.getByText("3")).toBeTruthy()
     expect(screen.getByTestId("favorites-icon")).toBeTruthy()
 
     fireEvent.click(button)
     expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it("Button.IconButton enables tooltip only when showTooltip is set", () => {
+    render(
+      <>
+        <Button.IconButton id="plain" icon={<svg aria-hidden />} alt="Plain action" />
+        <Button.IconButton
+          id="hinted"
+          icon={<svg aria-hidden />}
+          alt="Hinted action"
+          showTooltip
+          title="Hinted action"
+          description="Tooltip details"
+        />
+      </>
+    )
+
+    const plainButton = screen.getByRole("button", { name: "Plain action" })
+    const hintedButton = screen.getByRole("button", { name: "Hinted action" })
+
+    expect(plainButton.getAttribute("data-state")).toBeNull()
+    expect(hintedButton.getAttribute("data-state")).toBe("closed")
   })
 
   it("Button.IconButton disables interaction when comingSoon is set", () => {
