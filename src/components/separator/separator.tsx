@@ -15,6 +15,10 @@ interface SeparatorInternalProps extends SeparatorProps {
   asChild?: boolean;
 }
 
+const runtimeNodeEnv = (
+  globalThis as { process?: { env?: { NODE_ENV?: string } } }
+).process?.env?.NODE_ENV;
+
 const Separator: React.FC<SeparatorInternalProps> = ({
   className,
   orientation = "horizontal",
@@ -43,7 +47,7 @@ const Separator: React.FC<SeparatorInternalProps> = ({
   const iconButtonRenderer = renderIconButton ?? defaultRenderIconButton;
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
+    if (runtimeNodeEnv === "production") {
       return;
     }
 

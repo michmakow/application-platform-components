@@ -1,5 +1,5 @@
 ---
-"@unitydynamics/application-platform-components": minor
+"@michmakow/application-platform-components": minor
 ---
 
 Expanded the component library with reusable UI and utility building blocks:

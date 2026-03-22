@@ -9,36 +9,69 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
     permissions:
-      contents: write
+      contents: read
       packages: write
-      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
+          package-manager-cache: false
           registry-url: https://npm.pkg.github.com
-          scope: "@unitydynamics"
+          scope: "@michmakow"
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build and Publish with Changesets
-        uses: changesets/action@v1
-        with:
-          publish: pnpm release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate publish token
+        if: ${{ env.NODE_AUTH_TOKEN == '' }}
+        run: |
+          echo "GH_PACKAGES_TOKEN secret is missing."
+          echo "Create a classic PAT with at least write:packages and read:packages scopes."
+          echo "If the token owner belongs to an organization, authorize SSO for that org."
+          exit 1
+
+      - name: Build package
+        run: pnpm build
+
+      - name: Validate package scope against repository owner
+        shell: bash
+        run: |
+          PACKAGE_SCOPE=$(node -p "require('./package.json').name.split('/')[0].replace('@','').toLowerCase()")
+          REPO_OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+
+          if [ "$PACKAGE_SCOPE" != "$REPO_OWNER" ]; then
+            echo "::warning::Package scope @$PACKAGE_SCOPE differs from repository owner @$REPO_OWNER."
+            echo "::warning::GITHUB_TOKEN cannot publish across different owners. Use GH_PACKAGES_TOKEN from an account with create package permission in @$PACKAGE_SCOPE."
+          fi
+
+      - name: Verify npm registry authentication
+        run: npm whoami --registry=https://npm.pkg.github.com
+
+      - name: Check if current version is already published
+        id: package_version
+        shell: bash
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version --registry=https://npm.pkg.github.com > /dev/null 2>&1; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "Package ${PACKAGE_NAME}@${PACKAGE_VERSION} is already published. Skipping publish."
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish package to GitHub Packages
+        if: steps.package_version.outputs.already_published != 'true'
+        run: pnpm changeset publish
