@@ -1,0 +1,16 @@
+import { Meta, Title, Description, Primary, Controls, Story } from "@storybook/addon-docs/blocks"
+import * as DropdownStories from "../../stories/dropdown.stories"
+
+<Meta of={DropdownStories} />
+
+<Title />
+<Description>
+Single and multi-select dropdown with search, presets, icon placements and compact icon-only trigger mode.
+</Description>
+
+<Primary of={DropdownStories.Playground} />
+<Controls of={DropdownStories.Playground} />
+
+## Examples
+<Story of={DropdownStories.MultiSelectWithPresets} />
+<Story of={DropdownStories.CompactIconOnly} />

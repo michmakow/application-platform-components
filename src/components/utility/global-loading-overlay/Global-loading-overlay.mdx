@@ -1,0 +1,16 @@
+import { Meta, Title, Description, Primary, Story } from "@storybook/addon-docs/blocks"
+import * as GlobalLoadingOverlayStories from "../../../stories/global-loading-overlay.stories"
+
+<Meta of={GlobalLoadingOverlayStories} />
+
+<Title />
+<Description>
+Global loading mask controlled via utility store.
+Designed for blocking async workflows with customizable spinner style.
+</Description>
+
+<Primary of={GlobalLoadingOverlayStories.Default} />
+
+## Examples
+<Story of={GlobalLoadingOverlayStories.OrbitWave} />
+<Story of={GlobalLoadingOverlayStories.WithCenterUD} />

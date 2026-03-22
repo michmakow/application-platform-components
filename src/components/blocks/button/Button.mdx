@@ -1,0 +1,18 @@
+import { Meta, Title, Description, Primary, Controls, Story } from "@storybook/addon-docs/blocks"
+import * as ButtonStories from "../../../stories/button.stories"
+
+<Meta of={ButtonStories} />
+
+<Title />
+<Description>
+Reusable action button with variants, intents, sizes, loading states and icon support.
+Use this component for all primary and secondary call-to-action controls in the platform.
+</Description>
+
+<Primary of={ButtonStories.Default} />
+<Controls of={ButtonStories.Default} />
+
+## Examples
+<Story of={ButtonStories.Variants} />
+<Story of={ButtonStories.Icons} />
+<Story of={ButtonStories.LoadingStates} />

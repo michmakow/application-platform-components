@@ -1,0 +1,62 @@
+@config "../tailwind.config.ts";
+@import "tailwindcss";
+
+:root,
+.sbdocs,
+.sbdocs-wrapper,
+#storybook-root {
+  color-scheme: light;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --popover: 255 255 255;
+  --popover-foreground: 15 23 42;
+  --primary: 230 195 106;
+  --primary-foreground: 11 21 38;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  --accent: 226 232 240;
+  --accent-foreground: 15 23 42;
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --ring: 29 78 216;
+}
+
+body {
+  margin: 0;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+.sbdocs,
+.sbdocs-wrapper,
+#storybook-root {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+.sbdocs-title {
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.sbdocs-title::after {
+  content: "";
+  display: inline-block;
+  width: 320px;
+  height: 60px;
+  background-image: url("./assets/brand-horizontal_transparent.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
