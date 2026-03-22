@@ -1,0 +1,13 @@
+import { Meta, Title, Description, Primary, Controls } from "@storybook/addon-docs/blocks"
+import * as ImageLightboxStories from "../../../stories/image-lightbox.stories"
+
+<Meta of={ImageLightboxStories} />
+
+<Title />
+<Description>
+Clickable image preview that opens a lightbox for enlarged viewing.
+Useful for attachments, thumbnails and gallery-like interfaces.
+</Description>
+
+<Primary of={ImageLightboxStories.Default} />
+<Controls of={ImageLightboxStories.Default} />

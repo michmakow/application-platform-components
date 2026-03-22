@@ -1,0 +1,13 @@
+import { Meta, Title, Description, Primary, Controls } from "@storybook/addon-docs/blocks"
+import * as CardStories from "../../stories/card.stories"
+
+<Meta of={CardStories} />
+
+<Title />
+<Description>
+Composable surface container with header, content, action and footer slots.
+Use Card for grouped information, previews and side-panel summaries.
+</Description>
+
+<Primary of={CardStories.Default} />
+<Controls of={CardStories.Default} />

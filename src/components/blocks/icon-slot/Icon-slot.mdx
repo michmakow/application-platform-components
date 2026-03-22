@@ -1,0 +1,17 @@
+import { Meta, Title, Description, Primary, Controls, Story } from "@storybook/addon-docs/blocks"
+import * as IconSlotStories from "../../../stories/icon-slot.stories"
+
+<Meta of={IconSlotStories} />
+
+<Title />
+<Description>
+Lightweight icon wrapper used by compound components.
+Provides consistent sizing and position markers for left/right icon alignment.
+</Description>
+
+<Primary of={IconSlotStories.Default} />
+<Controls of={IconSlotStories.Default} />
+
+## Examples
+<Story of={IconSlotStories.Positions} />
+<Story of={IconSlotStories.Sizes} />

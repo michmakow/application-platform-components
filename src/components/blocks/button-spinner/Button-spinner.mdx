@@ -1,0 +1,17 @@
+import { Meta, Title, Description, Primary, Controls, Story } from "@storybook/addon-docs/blocks"
+import * as ButtonSpinnerStories from "../../../stories/button-spinner.stories"
+
+<Meta of={ButtonSpinnerStories} />
+
+<Title />
+<Description>
+Small spinner optimized for in-button loading states.
+It inherits text color and keeps layout stable for compact action surfaces.
+</Description>
+
+<Primary of={ButtonSpinnerStories.Default} />
+<Controls of={ButtonSpinnerStories.Default} />
+
+## Examples
+<Story of={ButtonSpinnerStories.Sizes} />
+<Story of={ButtonSpinnerStories.Inline} />
