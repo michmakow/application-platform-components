@@ -178,6 +178,118 @@ describe("Dropdown", () => {
     expect(screen.queryByTestId("icon-only-left")).toBeNull()
   })
 
+  it("uses leftIcon source fallback to icon in icon-only trigger", () => {
+    render(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            icon: <span data-testid="icon-only-left-fallback">#</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="leftIcon"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-left-fallback")).toBeTruthy()
+  })
+
+  it("uses icon source fallback chain in icon-only trigger", () => {
+    const { rerender } = render(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            leftIcon: <span data-testid="icon-only-icon-fallback-left">*</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="icon"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-icon-fallback-left")).toBeTruthy()
+
+    rerender(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            rightIcon: <span data-testid="icon-only-icon-fallback-right">+</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="icon"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-icon-fallback-right")).toBeTruthy()
+  })
+
+  it("prefers rightIcon when iconOnlySource is rightIcon", () => {
+    render(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            rightIcon: <span data-testid="icon-only-right-primary">+</span>,
+            leftIcon: <span data-testid="icon-only-right-secondary">*</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="rightIcon"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-right-primary")).toBeTruthy()
+  })
+
+  it("uses rightIcon source fallback to leftIcon in icon-only trigger", () => {
+    render(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            leftIcon: <span data-testid="icon-only-right-fallback">*</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+        iconOnlySource="rightIcon"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-right-fallback")).toBeTruthy()
+  })
+
+  it("uses auto source fallback to rightIcon in icon-only trigger", () => {
+    render(
+      <Dropdown
+        options={[
+          {
+            value: "clarity",
+            label: "Clarity",
+            rightIcon: <span data-testid="icon-only-auto-right">+</span>,
+          },
+        ]}
+        defaultValue="clarity"
+        triggerDisplay="icon-only"
+      />
+    )
+
+    expect(screen.getByTestId("icon-only-auto-right")).toBeTruthy()
+  })
+
   it("falls back to label in icon-only trigger when selected option has no icon", () => {
     render(
       <Dropdown
@@ -196,6 +308,42 @@ describe("Dropdown", () => {
     ).toBeNull()
     expect(selectedContainer.textContent).toContain("Facts")
     expect(document.querySelector('[data-slot="dropdown-chevron"]')).toBeNull()
+  })
+
+  it("handles icon-only fallback path for selectedIconPlacement left", () => {
+    render(
+      <Dropdown
+        options={[{ value: "facts", label: "Facts" }]}
+        defaultValue="facts"
+        triggerDisplay="icon-only"
+        selectedIconPlacement="left"
+      />
+    )
+
+    expect(
+      document.querySelector('[data-slot="dropdown-selected-icon-only"]')
+    ).toBeNull()
+    expect(document.querySelector('[data-slot="dropdown-selected"]')?.textContent).toContain(
+      "Facts"
+    )
+  })
+
+  it("handles icon-only fallback path for selectedIconPlacement right", () => {
+    render(
+      <Dropdown
+        options={[{ value: "facts", label: "Facts" }]}
+        defaultValue="facts"
+        triggerDisplay="icon-only"
+        selectedIconPlacement="right"
+      />
+    )
+
+    expect(
+      document.querySelector('[data-slot="dropdown-selected-icon-only"]')
+    ).toBeNull()
+    expect(document.querySelector('[data-slot="dropdown-selected"]')?.textContent).toContain(
+      "Facts"
+    )
   })
 
   it("filters options by label when searchable mode is enabled", () => {

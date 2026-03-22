@@ -1,0 +1,13 @@
+import { Meta, Title, Description, Primary, Controls } from "@storybook/addon-docs/blocks"
+import * as TooltipStories from "../../../stories/tooltip.stories"
+
+<Meta of={TooltipStories} />
+
+<Title />
+<Description>
+Accessible tooltip built on Radix primitives with configurable side and animation.
+Use for concise contextual hints, not for core content.
+</Description>
+
+<Primary of={TooltipStories.Default} />
+<Controls of={TooltipStories.Default} />

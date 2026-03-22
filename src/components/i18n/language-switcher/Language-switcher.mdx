@@ -1,0 +1,16 @@
+import { Meta, Title, Description, Primary, Story } from "@storybook/addon-docs/blocks"
+import * as LanguageSwitcherStories from "../../../stories/language-switcher.stories"
+
+<Meta of={LanguageSwitcherStories} />
+
+<Title />
+<Description>
+Language selector integrated with i18next and direction switching (LTR/RTL).
+Supports floating and compact trigger variants.
+</Description>
+
+<Primary of={LanguageSwitcherStories.Floating} />
+
+## Examples
+<Story of={LanguageSwitcherStories.Compact} />
+<Story of={LanguageSwitcherStories.CompactFullIcon} />

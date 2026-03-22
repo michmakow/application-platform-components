@@ -1,0 +1,15 @@
+import { Meta, Title, Description, Primary, Story } from "@storybook/addon-docs/blocks"
+import * as SeparatorStories from "../../stories/separator.stories"
+
+<Meta of={SeparatorStories} />
+
+<Title />
+<Description>
+Decorative and semantic separator supporting lines, ornaments, icons and text center content.
+</Description>
+
+<Primary of={SeparatorStories.Horizontal} />
+
+## Examples
+<Story of={SeparatorStories.IconCentered} />
+<Story of={SeparatorStories.ClickableIcons} />

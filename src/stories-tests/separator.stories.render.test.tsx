@@ -2,7 +2,7 @@ import { composeStories } from "@storybook/react"
 import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 
-import * as stories from "./separator.stories"
+import * as stories from "../stories/separator.stories"
 
 const {
   IconCentered,

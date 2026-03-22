@@ -1,37 +1,13 @@
-// FILE: src/components/blocks/button/Button.mdx
-import { Meta, Title, Subtitle, Description, Primary, Controls, Story } from "@storybook/blocks"
+import { Meta, Title, Description, Primary, Controls, Story } from "@storybook/addon-docs/blocks"
 import * as ButtonStories from "../../../stories/button.stories"
 
 <Meta of={ButtonStories} />
 
 <Title />
-<Subtitle>Production-grade button for Unity platform surfaces</Subtitle>
 <Description>
-A unified Button that balances clarity, accessibility, and extensibility across dashboards, admin surfaces,
-and visualizers. It supports semantic intent, loading states, icons, and optional Unity glow without
-locking you into a single visual treatment.
+Reusable action button with variants, intents, sizes, loading states and icon support.
+Use this component for all primary and secondary call-to-action controls in the platform.
 </Description>
-
-## When To Use
-- Primary and secondary actions that move users forward.
-- Inline actions that should read like links in paragraphs.
-- Confirmation actions where a loading state prevents double-submit.
-
-## Do
-- Use one primary button per view to keep focus clear.
-- Set `loading` for async actions and provide `loadingText` for announcements.
-- Use `href` for simple links or `asChild` for custom link components.
-
-## Don't
-- Stack multiple primary buttons with equal visual weight.
-- Use glow on destructive actions or low-priority controls.
-- Remove labels during loading when the action still needs context.
-
-## Accessibility Notes
-- Defaults to `type="button"` when rendered as a button element.
-- `loading` sets `aria-busy` and disables interaction.
-- `loadingText` is announced to assistive technologies.
-- When rendered as a link, `aria-disabled` is applied and focus is removed while disabled/loading.
 
 <Primary of={ButtonStories.Default} />
 <Controls of={ButtonStories.Default} />
@@ -40,8 +16,3 @@ locking you into a single visual treatment.
 <Story of={ButtonStories.Variants} />
 <Story of={ButtonStories.Icons} />
 <Story of={ButtonStories.LoadingStates} />
-
-## Unity Glow
-- Reserve glow for a single high-priority action in a view.
-- Prefer `glowIntensity="soft"` for regular dashboards.
-- Use medium or strong glow sparingly for hero moments.

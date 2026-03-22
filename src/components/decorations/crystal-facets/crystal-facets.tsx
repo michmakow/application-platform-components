@@ -14,8 +14,6 @@ interface RGBColor {
   b: number
 }
 
-const defaultColor: RGBColor = { r: 255, g: 210, b: 111 }
-
 const parseHexColor = (value: string): RGBColor | null => {
   const sanitized = value.trim().replace("#", "")
 
@@ -91,11 +89,7 @@ export const CrystalFacets: React.FC<CrystalFacetsProps> = ({
       return toRgba(parsedColor, alpha)
     }
 
-    if (normalizedColor.length > 0) {
-      return normalizedColor
-    }
-
-    return toRgba(defaultColor, alpha)
+    return normalizedColor
   }
 
   const normalizedFacetSize = normalizeFacetSize(facetSize)

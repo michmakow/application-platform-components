@@ -434,6 +434,20 @@ describe("Separator", () => {
     }
   })
 
+  it("skips asChild warning in production mode", () => {
+    const previousNodeEnv = process.env.NODE_ENV
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {})
+
+    process.env.NODE_ENV = "production"
+    try {
+      render(<Separator {...({ asChild: true } as any)} />)
+      expect(warnSpy).not.toHaveBeenCalled()
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv
+      warnSpy.mockRestore()
+    }
+  })
+
   it("applies custom trackExtent for vertical center and diagonal variants", () => {
     const { container, rerender } = render(
       <Separator variant="icon" orientation="vertical" trackExtent={88} color="red" />,
@@ -448,6 +462,7 @@ describe("Separator", () => {
     expect(root.style.height).toBe("10rem")
   })
 })
+
 
 
 

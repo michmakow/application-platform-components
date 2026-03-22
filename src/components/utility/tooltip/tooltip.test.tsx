@@ -1,5 +1,5 @@
 import * as React from "react"
-import { afterEach, describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip"
@@ -80,6 +80,44 @@ describe("Tooltip", () => {
     expect(content.getAttribute("data-side")).toBe("left")
     expect(content.style.getPropertyValue("--ud-tooltip-enter-x")).toBe("8px")
     expect(content.style.getPropertyValue("--ud-tooltip-enter-y")).toBe("0px")
+  })
+
+  it("applies right side offset to tooltip content", () => {
+    render(
+      <Tooltip open>
+        <TooltipTrigger>Trigger right</TooltipTrigger>
+        <TooltipContent side="right">Right side content</TooltipContent>
+      </Tooltip>
+    )
+
+    const content = getTooltipContentByText("Right side content")
+    expect(content.getAttribute("data-side")).toBe("right")
+    expect(content.style.getPropertyValue("--ud-tooltip-enter-x")).toBe("-8px")
+    expect(content.style.getPropertyValue("--ud-tooltip-enter-y")).toBe("0px")
+  })
+
+  it("keeps single keyframes style when module is imported with existing style tag", async () => {
+    const beforeCount = document.querySelectorAll("#ud-tooltip-animation-keyframes").length
+    const existingStyle = document.createElement("style")
+    existingStyle.id = "ud-tooltip-animation-keyframes"
+    document.head.appendChild(existingStyle)
+
+    vi.resetModules()
+    await import("./tooltip")
+
+    expect(document.querySelectorAll("#ud-tooltip-animation-keyframes")).toHaveLength(beforeCount + 1)
+  })
+
+  it("does not inject keyframes when document is unavailable at module evaluation", async () => {
+    const originalDocument = globalThis.document
+
+    vi.stubGlobal("document", undefined)
+    vi.resetModules()
+
+    await import("./tooltip")
+
+    vi.stubGlobal("document", originalDocument)
+    expect(globalThis.document).toBe(originalDocument)
   })
 
   it("does not animate when animation is set to none", () => {

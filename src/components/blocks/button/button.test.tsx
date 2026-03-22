@@ -109,6 +109,17 @@ describe("Button", () => {
     expect(container.querySelectorAll('[data-slot="spinner"]').length).toBe(1)
   })
 
+  it("keeps icon slot rendered while left spinner is visible", () => {
+    const { container } = render(
+      <Button loading loadingPosition="left" leftIcon={<svg data-testid="left-icon" aria-hidden />}>
+        Save
+      </Button>
+    )
+
+    expect(container.querySelector('[data-slot="icon"]')).toBeTruthy()
+    expect(container.querySelector('[data-slot="icon"]')?.className).toContain("opacity-0")
+  })
+
   it("data attributes applied correctly", () => {
     render(
       <Button
@@ -245,6 +256,22 @@ describe("Button", () => {
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
+  it("Button.IconButton renders dot without badge content fallback", () => {
+    render(
+      <Button.IconButton
+        id="dot-only"
+        icon={<svg aria-hidden />}
+        alt="Dot only"
+        showDot
+        dotTitle="Badge dot"
+      />
+    )
+
+    const dot = document.querySelector('[title="Badge dot"]') as HTMLSpanElement
+    expect(dot).toBeTruthy()
+    expect(dot.textContent).toBe("")
+  })
+
   it("Button.IconButton enables tooltip only when showTooltip is set", () => {
     render(
       <>
@@ -265,6 +292,46 @@ describe("Button", () => {
 
     expect(plainButton.getAttribute("data-state")).toBeNull()
     expect(hintedButton.getAttribute("data-state")).toBe("closed")
+  })
+
+  it("Button.IconButton supports string icon and tooltip metadata", () => {
+    render(
+      <Button.IconButton
+        id="string-icon"
+        icon="/fake/icon.svg"
+        alt="String icon action"
+        showTooltip
+        title="String icon action"
+        description="Detailed tooltip copy"
+        comingSoon="Soon"
+      />
+    )
+
+    const button = screen.getByRole("button", { name: "String icon action" })
+    expect(button.getAttribute("data-state")).toBe("closed")
+    expect((button as HTMLButtonElement).disabled).toBe(false)
+    expect(document.querySelector('img[src=\"/fake/icon.svg\"]')).toBeTruthy()
+  })
+
+  it("Button.IconButton supports primary variant tooltip without description", () => {
+    render(
+      <Button.IconButton
+        id="primary-icon"
+        icon="/fake/primary.svg"
+        alt="Primary icon action"
+        variant="primary"
+        showTooltip
+        comingSoon="Soon"
+      />
+    )
+
+    const button = screen.getByRole("button", { name: "Primary icon action" })
+    const icon = document.querySelector('img[src="/fake/primary.svg"]') as HTMLImageElement
+    const glow = button.querySelector(".blur-\\[10px\\]") as HTMLSpanElement
+
+    expect(icon.className).toContain("brightness(1.06)")
+    expect(glow.className).toContain("rgba(255,210,111,0.24)")
+    expect(button.querySelector('[data-slot="tooltip-trigger"]')).toBeNull()
   })
 
   it("Button.IconButton disables interaction when comingSoon is set", () => {

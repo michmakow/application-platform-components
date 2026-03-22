@@ -1,0 +1,12 @@
+import { Meta, Title, Description, Primary } from "@storybook/addon-docs/blocks"
+import * as GlobalToastStories from "../../../stories/global-toast.stories"
+
+<Meta of={GlobalToastStories} />
+
+<Title />
+<Description>
+Centralized toast notifications backed by the utility store queue.
+Supports positioning, enter/exit direction and stacked/replaced layouts.
+</Description>
+
+<Primary of={GlobalToastStories.Default} />

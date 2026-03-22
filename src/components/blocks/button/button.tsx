@@ -242,26 +242,18 @@ export const ButtonRoot = React.forwardRef<HTMLElement, ButtonProps>(
 ButtonRoot.displayName = "Button";
 
 export type ButtonIconButtonProps = Omit<
-  ButtonProps,
-  | "children"
-  | "leftIcon"
-  | "rightIcon"
-  | "variant"
-  | "intent"
-  | "fullWidth"
-  | "loading"
-  | "loadingText"
-  | "loadingPosition"
-  | "glowIntensity"
-  | "rounded"
-  | "elevated"
-  | "asChild"
-  | "href"
-  | "type"
+  React.ComponentPropsWithoutRef<"button">,
+  "children" | "onClick" | "type" | "disabled"
 > & {
   id: string;
   icon: React.ReactNode | string;
   alt: string;
+  size?: ButtonSize;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  disabled?: boolean;
+  className?: string;
+  analyticsId?: string;
+  testId?: string;
   title?: string;
   description?: string;
   variant?: ButtonIconButtonVariant;
@@ -295,7 +287,9 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
       ...rest
     } = props;
 
-    const isDisabled = Boolean(disabled) || Boolean(comingSoon);
+    const hasComingSoon = Boolean(comingSoon);
+    const isInteractionDisabled = Boolean(disabled) || hasComingSoon;
+    const isNativeDisabled = Boolean(disabled) || (hasComingSoon && !showTooltip);
 
     const iconTone =
       variant === "primary"
@@ -339,12 +333,12 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
         aria-current={active ? "page" : undefined}
         data-nav-button="true"
         data-nav-id={id}
-        onClick={isDisabled ? undefined : onClick}
-        disabled={isDisabled}
+        onClick={isInteractionDisabled ? undefined : onClick}
+        disabled={isNativeDisabled}
         className={cn(
           "group !h-auto !w-auto rounded-3xl border border-transparent p-3 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#E6C36A]/45 focus-visible:ring-offset-1 focus-visible:ring-offset-[#001629]",
-          !isDisabled && "cursor-pointer hover:bg-[#E6C36A]/10 hover:border-[#E6C36A]/60 active:scale-[0.98]",
-          isDisabled && "cursor-default opacity-60",
+          !isInteractionDisabled && "cursor-pointer hover:bg-[#E6C36A]/10 hover:border-[#E6C36A]/60 active:scale-[0.98]",
+          isInteractionDisabled && "cursor-default opacity-60",
           activeFrame,
           className,
         )}
@@ -356,7 +350,7 @@ export const ButtonIconButton = React.forwardRef<HTMLElement, ButtonIconButtonPr
             glowTone,
             active
               ? "opacity-95"
-              : isDisabled
+              : isInteractionDisabled
                 ? "opacity-0"
                 : "opacity-0 group-hover:opacity-90 group-focus-visible:opacity-90",
           )}
